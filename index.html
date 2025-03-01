@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loginPage" class="container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Enter Email">
+        <input type="password" id="password" placeholder="Enter Password">
+        <button onclick="login()">Login</button>
+        <p>Not registered? <a href="#" onclick="showRegister()">Register here</a></p>
+    </div>
+
+    <div id="registerPage" class="container hidden">
+        <h2>Register</h2>
+        <input type="email" id="regEmail" placeholder="Enter Email">
+        <input type="password" id="regPassword" placeholder="Enter Password">
+        <button onclick="register()">Register</button>
+        <p>Already registered? <a href="#" onclick="showLogin()">Login here</a></p>
+    </div>
+
+    <div id="subjectPage" class="container hidden">
+        <h2>Welcome to Quiz</h2>
+        <button onclick="selectSubject('maths')">Maths</button>
+        <button onclick="selectSubject('science')">Science</button>
+        <button onclick="selectSubject('english')">English</button>
+        <button onclick="selectSubject('history')">History</button>
+    </div>
+
+    <div id="quizStartPage" class="container hidden">
+        <h2>Your test is about to start... Best of Luck!</h2>
+        <p>Starting in <span id="countdown">3</span> seconds...</p>
+    </div>
+
+    <div id="quizPage" class="container hidden">
+        <h2 id="quizHeading"></h2>
+        <p id="question"></p>
+        <div id="options"></div>
+        <p>Time left: <span id="timer">5</span> seconds</p>
+    </div>
+
+    <div id="resultPage" class="container hidden">
+        <h2>Quiz Completed!</h2>
+        <p id="scoreMessage"></p>
+        <button onclick="restartQuiz()">Try Again</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
