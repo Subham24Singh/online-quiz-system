@@ -7,32 +7,54 @@ let selectedSubject = "";
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
+let userAnswers = [];
 
 // Quiz Questions
 const quizData = {
     maths: [
-        { question: "2 + 2 = ?", options: ["3", "4", "5", "6"], answer: "4" },
-        { question: "5 × 6 = ?", options: ["11", "30", "25", "35"], answer: "30" },
-        { question: "10 ÷ 2 = ?", options: ["2", "5", "10", "20"], answer: "5" },
-        { question: "Square root of 16?", options: ["2", "4", "6", "8"], answer: "4" }
+        { "question": "What is the value of π (pi) up to three decimal places?", "options": ["3.14", "3.141", "3.142", "3.143"], "answer": "3.142" },
+        { "question": "Solve for x: 2x + 5 = 15", "options": ["5", "10", "7.5", "2.5"], "answer": "5" },
+        { "question": "What is the square root of 225?", "options": ["10", "12", "15", "18"], "answer": "15" },
+        { "question": "Which number is a prime number?", "options": ["49", "51", "53", "55"], "answer": "53" },
+        { "question": "What is the sum of the interior angles of a hexagon?", "options": ["360°", "540°", "720°", "900°"], "answer": "720°" },
+        { "question": "What is 8! (8 factorial)?", "options": ["40320", "5040", "720", "362880"], "answer": "40320" },
+        { "question": "What is the logarithm of 1000 to the base 10?", "options": ["1", "2", "3", "4"], "answer": "3" },
+        { "question": "How many sides does a dodecagon have?", "options": ["8", "10", "12", "14"], "answer": "12" },
+        { "question": "If a train travels at 80 km/h for 3 hours, how far does it go?", "options": ["200 km", "220 km", "240 km", "260 km"], "answer": "240 km" },
+        { "question": "What is the derivative of sin(x)?", "options": ["cos(x)", "-cos(x)", "sin(x)", "-sin(x)"], "answer": "cos(x)" }
     ],
     science: [
-        { question: "What is H₂O?", options: ["Oxygen", "Hydrogen", "Water", "Helium"], answer: "Water" },
-        { question: "What planet is known as the Red Planet?", options: ["Mars", "Venus", "Earth", "Jupiter"], answer: "Mars" },
-        { question: "Sun is a?", options: ["Planet", "Moon", "Star", "Asteroid"], answer: "Star" },
-        { question: "Which gas do plants release?", options: ["Oxygen", "Carbon", "Nitrogen", "Helium"], answer: "Oxygen" }
+        { "question": "What is the most abundant gas in Earth's atmosphere?", "options": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"], "answer": "Nitrogen" },
+        { "question": "Which part of the cell is responsible for energy production?", "options": ["Nucleus", "Ribosome", "Mitochondria", "Golgi Apparatus"], "answer": "Mitochondria" },
+        { "question": "Which planet has the most moons?", "options": ["Jupiter", "Saturn", "Neptune", "Uranus"], "answer": "Saturn" },
+        { "question": "What is the chemical symbol for gold?", "options": ["Ag", "Pb", "Au", "Fe"], "answer": "Au" },
+        { "question": "Which law states that for every action, there is an equal and opposite reaction?", "options": ["Newton’s First Law", "Newton’s Second Law", "Newton’s Third Law", "Law of Conservation of Energy"], "answer": "Newton’s Third Law" },
+        { "question": "Which organ in the human body produces insulin?", "options": ["Liver", "Kidney", "Pancreas", "Heart"], "answer": "Pancreas" },
+        { "question": "What type of energy is stored in a stretched rubber band?", "options": ["Kinetic", "Potential", "Thermal", "Chemical"], "answer": "Potential" },
+        { "question": "Which planet is known as the Morning Star?", "options": ["Mars", "Venus", "Mercury", "Jupiter"], "answer": "Venus" },
+        { "question": "What is the hardest natural substance on Earth?", "options": ["Iron", "Gold", "Diamond", "Quartz"], "answer": "Diamond" },
+        { "question": "Which vitamin is mainly obtained from sunlight?", "options": ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"], "answer": "Vitamin D" }
     ],
     english: [
-        { question: "Synonym of 'Happy'?", options: ["Sad", "Angry", "Joyful", "Bored"], answer: "Joyful" },
-        { question: "Antonym of 'Big'?", options: ["Small", "Huge", "Tall", "Wide"], answer: "Small" },
-        { question: "Which is a noun?", options: ["Run", "Jump", "Book", "Fast"], answer: "Book" },
-        { question: "Plural of 'Child'?", options: ["Childs", "Children", "Childes", "Chil"], answer: "Children" }
+        { "question": "Which word is a synonym of 'benevolent'?", "options": ["Cruel", "Kind", "Angry", "Evil"], "answer": "Kind" },
+        { "question": "What is the plural of 'phenomenon'?", "options": ["Phenomenas", "Phenomenon", "Phenomena", "Phenomenons"], "answer": "Phenomena" },
+        { "question": "Identify the correctly punctuated sentence.", "options": ["Its a beautiful day!", "It's a beautiful day!", "Its' a beautiful day!", "Its's a beautiful day!"], "answer": "It's a beautiful day!" },
+        { "question": "Which is an example of a simile?", "options": ["She is a shining star", "Her smile was like the sun", "The wind whispered through the trees", "Time is a thief"], "answer": "Her smile was like the sun" },
+        { "question": "What is the past participle of 'swim'?", "options": ["Swimmed", "Swam", "Swum", "Swim"], "answer": "Swum" },
+        { "question": "Which word is a homonym?", "options": ["Lead (metal) & Lead (to guide)", "Run & Ran", "Big & Small", "Fast & Slow"], "answer": "Lead (metal) & Lead (to guide)" },
+        { "question": "What is an oxymoron?", "options": ["A contradiction", "A simile", "A metaphor", "A synonym"], "answer": "A contradiction" }
     ],
     history: [
-        { question: "Who discovered America?", options: ["Columbus", "Newton", "Einstein", "Galileo"], answer: "Columbus" },
-        { question: "Who was the first US President?", options: ["Lincoln", "Washington", "Roosevelt", "Jefferson"], answer: "Washington" },
-        { question: "Year of World War I?", options: ["1914", "1939", "1945", "1901"], answer: "1914" },
-        { question: "Who built the Taj Mahal?", options: ["Akbar", "Shah Jahan", "Babur", "Aurangzeb"], answer: "Shah Jahan" }
+        { "question": "Who was the first Emperor of China?", "options": ["Qin Shi Huang", "Kublai Khan", "Sun Yat-sen", "Mao Zedong"], "answer": "Qin Shi Huang" },
+        { "question": "Which war was fought between the Royalists and Parliamentarians in England?", "options": ["Hundred Years' War", "War of Roses", "English Civil War", "Napoleonic Wars"], "answer": "English Civil War" },
+        { "question": "Which ancient civilization built the Machu Picchu?", "options": ["Maya", "Inca", "Aztec", "Olmec"], "answer": "Inca" },
+        { "question": "Who was the first ruler of the Maurya Empire?", "options": ["Ashoka", "Chandragupta Maurya", "Bindusara", "Harsha"], "answer": "Chandragupta Maurya" },
+        { "question": "Which treaty ended World War I?", "options": ["Treaty of Paris", "Treaty of Versailles", "Treaty of Tordesillas", "Treaty of Ghent"], "answer": "Treaty of Versailles" },
+        { "question": "Who led the Bolshevik Revolution in Russia in 1917?", "options": ["Joseph Stalin", "Vladimir Lenin", "Leon Trotsky", "Mikhail Gorbachev"], "answer": "Vladimir Lenin" },
+        { "question": "Who discovered the sea route to India?", "options": ["Christopher Columbus", "Vasco da Gama", "Marco Polo", "Ferdinand Magellan"], "answer": "Vasco da Gama" },
+        { "question": "Which empire was ruled by Genghis Khan?", "options": ["Ottoman Empire", "Mongol Empire", "Byzantine Empire", "Roman Empire"], "answer": "Mongol Empire" },
+        { "question": "The Great Fire of London occurred in which year?", "options": ["1666", "1642", "1776", "1804"], "answer": "1666" },
+        { "question": "Who was the first President of the United States?", "options": ["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"], "answer": "George Washington" }
     ]
 };
 
@@ -101,7 +123,6 @@ function login() {
     document.getElementById("subjectPage").classList.remove("hidden");
 }
 
-
 // Subject selection
 function selectSubject(subject) {
     selectedSubject = subject;
@@ -131,7 +152,7 @@ function startQuiz() {
 
 // Load quiz questions
 function loadQuestion() {
-    if (currentQuestionIndex >= 4) {
+    if (currentQuestionIndex >= 10) {
         endQuiz();
         return;
     }
@@ -172,6 +193,11 @@ function startTimer() {
 // Check answer
 function checkAnswer(selected, correct) {
     clearInterval(timer);
+    userAnswers.push({
+        question: quizData[selectedSubject][currentQuestionIndex].question,
+        selected: selected,
+        correct: correct
+    });
     if (selected === correct) {
         score++;
     }
@@ -189,11 +215,27 @@ function endQuiz() {
     document.getElementById("quizPage").classList.add("hidden");
     document.getElementById("resultPage").classList.remove("hidden");
 
-    let message = score === 4 ? " Good! You got all 4 correct!" :
-                  score === 3 ? " Nice! You got 3 out of 4 correct!" :
-                               ` You got ${score} out of 4 correct. Try again!`;
+    let totalQuestions = 10; 
+
+    let message = (score === totalQuestions) 
+        ? " Excellent! You got all questions correct!" 
+        : (score >= totalQuestions * 0.8)  
+            ? ` Great! You got ${score} out of ${totalQuestions} correct!` 
+            : (score >= totalQuestions * 0.5)  
+                ? ` Good job! You got ${score} out of ${totalQuestions}. Keep practicing!` 
+                : ` You got ${score} out of ${totalQuestions}. Try again!`;
 
     document.getElementById("scoreMessage").innerText = message;
+    let resultDetails = document.getElementById("resultDetails");
+    resultDetails.innerHTML = "<h3>Quiz Summary</h3>";
+
+    userAnswers.forEach((item, index) => {
+        let status = item.selected === item.correct ? "✔️ Correct" : "❌ Wrong";
+        let answerText = `<p><strong>Q${index + 1}:</strong> ${item.question}<br>
+                          <strong>Your Answer:</strong> ${item.selected} ${status}<br>
+                          <strong>Correct Answer:</strong> ${item.correct}</p>`;
+        resultDetails.innerHTML += answerText;
+    });
 }
 
 // Restart Quiz
@@ -201,3 +243,4 @@ function restartQuiz() {
     document.getElementById("resultPage").classList.add("hidden");
     document.getElementById("subjectPage").classList.remove("hidden");
 }
+
